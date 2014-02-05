@@ -82,4 +82,11 @@ end
 service node['rsyslog']['service_name'] do
   supports :restart => true, :reload => true, :status => true
   action   [:enable, :start]
+  case node['platform']
+    when 'ubuntu'
+      if node['platform_version'].to_f >= 13.10
+        provider Chef::Provider::Service::Upstart
+      end
+    end
+
 end
